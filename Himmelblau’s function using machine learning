@@ -1,0 +1,46 @@
+# Define the function
+def himmelblau(x1, x2):
+    f = pow((x1**2 + x2 - 11),2) + pow((x1 + x2**2 - 7),2) + x1
+    return f
+
+# Generate a grid of x1 and x2 values
+x1 = np.linspace(-6, 6, 100)
+x2 = np.linspace(-6, 6, 100)
+x1, x2 = np.meshgrid(x1, x2)
+
+# Compute the function values
+y = himmelblau(x1, x2)
+
+# Create a 3D plot
+fig = plt.figure(figsize=(15, 9))
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(x1, x2, y, cmap="Spectral")
+plt.show()
+
+
+
+#Defining f(x) under the PyTorch machine learning framework.
+import torch
+# Define the function
+def himmelblau(x):
+    x1 = x[0]
+    x2 = x[1]
+    return (x1**2 + x2 - 11)**2 + (x1 + x2**2 - 7)**2 + x1
+
+
+from torch.autograd import grad
+
+# Define the function
+def gradient_himmelblau(func,x):
+    x = x.clone().requires_grad_(True)
+    y1 = func(x[0],x[1])
+    y1.backward()
+    return x.grad
+
+# Create a tensor of input values
+x = torch.tensor([1.0, -1.0], requires_grad=True)
+# Compute the function value
+func = himmelblau(x)
+# Compute the gradient
+gradient = grad(func, x)
+print(gradient)
